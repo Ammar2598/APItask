@@ -20,7 +20,16 @@ class UserController extends Controller
         // foreach ($users as $user) {
         //     return $user->name;
         // }
-        return $users;
+        if($users ==Null){
+        return response()->json([
+            'success'=>true, 
+            'message'=>'string', 
+            'data'=>User::all(),
+            
+        ]);
+    }else{
+        return 'there is no data availabe';
+    }
     }
 
     /**
@@ -33,16 +42,23 @@ class UserController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(CreateNewUser $request)
     {
-        //
-        return User::create($request->all());
+
+           //code...
+        //    $validatedData = $request->validated();
+        //    \App\Validator::create($validatedData);
+        return response()->json([
+            'success'=>true, 
+            'message'=>'Add Successfully', 
+            'data'=>User::create($request->all()),
+            
+        ]);
+
+        // return User::create($request->all());
+
+        
     }
 
     /**
@@ -79,9 +95,19 @@ class UserController extends Controller
         //
         $user=User::find($id);
        
-        $user->update($request->all());
+        if($user !=null){
 
-        return $user;
+            return response()->json([
+                'success'=>true,
+                'message'=>'Updated Successfully',
+                'data'=>$user->update($request->all())
+            ]);
+        }else{
+           return "This ID Not Found ";
+        }
+        
+
+       
 
     }
 
@@ -93,7 +119,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $user=User::find($id);
+       
+        if($user !=null){
+
+            return response()->json([
+                'success'=>true,
+                'message'=>'Deleted Successfully',
+                'data'=>$user->delete()
+            ]);
+        }else{
+           return "This ID Not Found ";
+        }
         
-        return User::destroy($id);
     }
 }
